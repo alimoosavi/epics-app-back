@@ -1,0 +1,36 @@
+import time
+
+from database_config.config import mycursor, mydb
+from epics_db.pv_objects import chiller as chillerPv, power_Usage_Display as powerUsagePv, pressure as pressurePv, \
+    temperature_Average as tempAvgPv, thermometer_1 as th1Pv, thermometer_2 as th2Pv, thermometer_3 as th3Pv, \
+    time_countPv
+
+delay = 10
+
+
+def get_milliseconds_timestamp():
+    return int(round(time.time() * 1000));
+
+
+def log_pvs_to_database(ll, ll1):
+    while True:
+
+        th1, th2, th3, chiller, powerUsage, pressure, tempAvg, time_count = th1Pv.value, th2Pv.value, th3Pv.value, chillerPv.value, powerUsagePv.value, \
+                                                                            pressurePv.value, tempAvgPv.value, time_countPv.value
+
+        # find latest parameters log as foreign key in pv logs record
+        mycursor.execute("select id from ParametersLogs where time in (select max(time) from ParametersLogs )")
+        paramtersId = int(mycursor.fetchone()[0])
+
+        sql = "INSERT INTO PvLogs (parametersId, temperature_average , chiller , time_count , power_usage , pressure , pressure_stat , pressure_sevr , thermometer_1 , thermometer_2 , thermometer_3 , time) VALUES (%s, %s , %s , %s , %s , %s , %s , %s , %s , %s , %s , %s)"
+
+        print(paramtersId, tempAvg, chiller, time_count, powerUsage, pressure, 0, 0, th1, th2, th3,
+              get_milliseconds_timestamp())
+
+        # Todo: stat and sevr
+        val = (paramtersId, tempAvg, chiller, time_count, powerUsage, pressure, 0, 0, th1, th2, th3,
+               get_milliseconds_timestamp())
+        mycursor.execute(sql, val)
+        mydb.commit()
+
+        time.sleep(delay)
