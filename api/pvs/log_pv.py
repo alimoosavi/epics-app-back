@@ -12,7 +12,7 @@ def get_milliseconds_timestamp():
     return int(round(time.time() * 1000));
 
 
-def log_pvs_to_database(ll, ll1):
+def log_pvs_to_database(thread_name, thread_priority):
     while True:
 
         th1, th2, th3, chiller, powerUsage, pressure, tempAvg, time_count = th1Pv.value, th2Pv.value, th3Pv.value, chillerPv.value, powerUsagePv.value, \
@@ -24,8 +24,6 @@ def log_pvs_to_database(ll, ll1):
 
         sql = "INSERT INTO PvLogs (parametersId, temperature_average , chiller , time_count , power_usage , pressure , pressure_stat , pressure_sevr , thermometer_1 , thermometer_2 , thermometer_3 , time) VALUES (%s, %s , %s , %s , %s , %s , %s , %s , %s , %s , %s , %s)"
 
-        print(paramtersId, tempAvg, chiller, time_count, powerUsage, pressure, 0, 0, th1, th2, th3,
-              get_milliseconds_timestamp())
 
         # Todo: stat and sevr
         val = (paramtersId, tempAvg, chiller, time_count, powerUsage, pressure, 0, 0, th1, th2, th3,

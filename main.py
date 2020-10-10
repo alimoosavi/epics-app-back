@@ -6,6 +6,7 @@ from api.parameter.log_parameters import LogParameters
 from api.pvs.log_pv import log_pvs_to_database
 from api.pvs.live_log import LiveLog
 from api.pvs.pv import PV
+from api.parameter.generating_random_temperatures import set_random_temperatures
 import _thread
 
 app = Flask(__name__)
@@ -13,6 +14,9 @@ app.config['SECRET_KEY'] = 'vnkdjnfjknfl1232#'
 
 CORS(app)
 api = Api(app)
+
+_thread.start_new_thread(set_random_temperatures, ("Generating-Random-Temperatures", 2,))
+_thread.start_new_thread(log_pvs_to_database, ("Log-Pvs-Database", 4,))
 
 api.add_resource(Parameters, '/parameters', endpoint='parameters')
 api.add_resource(LogParameters, '/log/parameters', endpoint='log_parameters')

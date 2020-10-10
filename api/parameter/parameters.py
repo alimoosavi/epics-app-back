@@ -29,7 +29,6 @@ class Parameters(Resource):
 
         set_parameters(threshold, powerph, volume, mole)
 
-        _thread.start_new_thread(set_random_temperatures, ("Generating-Random-Temperatures", 2,))
-        _thread.start_new_thread(log_pvs_to_database, ("Log-Pvs-Database", 4,))
+
 
         return 'set successfully'
