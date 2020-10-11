@@ -6,6 +6,9 @@ pressure = PV('Pressure')
 time_Count = PV('Time_Count')
 power_Usage_Display = PV('Power_Usage_Display')
 
+sevr = PV('Pressure.SEVR')
+stat = PV('Pressure.STAT')
+
 thermometer_1 = PV('Thermometer_1.VAL')
 thermometer_2 = PV('Thermometer_2.VAL')
 thermometer_3 = PV('Thermometer_3.VAL')

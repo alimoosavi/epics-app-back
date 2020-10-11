@@ -3,7 +3,7 @@ import time
 from database_config.config import mycursor, mydb
 from epics_db.pv_objects import chiller as chillerPv, power_Usage_Display as powerUsagePv, pressure as pressurePv, \
     temperature_Average as tempAvgPv, thermometer_1 as th1Pv, thermometer_2 as th2Pv, thermometer_3 as th3Pv, \
-    time_countPv
+    time_countPv , sevr , stat
 
 delay = 10
 
@@ -25,8 +25,8 @@ def log_pvs_to_database(thread_name, thread_priority):
         sql = "INSERT INTO PvLogs (parametersId, temperature_average , chiller , time_count , power_usage , pressure , pressure_stat , pressure_sevr , thermometer_1 , thermometer_2 , thermometer_3 , time) VALUES (%s, %s , %s , %s , %s , %s , %s , %s , %s , %s , %s , %s)"
 
 
-        # Todo: stat and sevr
-        val = (paramtersId, tempAvg, chiller, time_count, powerUsage, pressure, 0, 0, th1, th2, th3,
+
+        val = (paramtersId, tempAvg, chiller, time_count, powerUsage, pressure, stat, sevr, th1, th2, th3,
                get_milliseconds_timestamp())
         mycursor.execute(sql, val)
         mydb.commit()
